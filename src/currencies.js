@@ -594,6 +594,19 @@ var CURRENCIES = [{
         symbol: 'bnb',
         validator: ETHValidator,
     },
+    {
+        name: 'ExchangeCoin',
+        symbol: 'excc',
+        addressTypes: { prod: ['21b9', '34af'], testnet: ['0f21', '0efc'] },
+        expectedLength: 26,
+        validator: BTCValidator,
+    },
+    {
+        name: 'Verge',
+        symbol: 'xvg',
+        addressTypes: { prod: ['1e'], testnet: ['6F'] },
+        validator: BTCValidator
+    },
 ];
 
 

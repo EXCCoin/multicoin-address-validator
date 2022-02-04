@@ -130,6 +130,12 @@ describe('WAValidator.validate()', function () {
             valid('2MxKEf2su6FGAUfCEAHreGFQvEYrfYNHvL7', 'dogecoin', 'testnet');
         });
 
+        it('should return true for correct excc addresses', function () {
+            valid('22txYKpFN5fwGwdSs2UBf7ywewbLM92YqK7E', 'excc');
+            valid('2ca8LhcQmHsRMNnnJfXK6yR4gKNysttCyc5b', 'excc');
+            valid('Tctx8yDZvytcxehWgBDHDdpbk1TPZ6LXy8G', 'excc', 'testnet');
+        });
+
         it('should return true for correct beavercoin addresses', function () {
             valid('BPPtB4EpPi5wCaGXZuNyKQgng8ya579qUh', 'beavercoin');
             valid('BC1LLYoE4mTCHTJhVYvLGxhRTwAHyWTQ49', 'beavercoin');
