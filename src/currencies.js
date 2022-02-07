@@ -604,7 +604,7 @@ var CURRENCIES = [{
     {
         name: 'Verge',
         symbol: 'xvg',
-        addressTypes: { prod: ['1e'], testnet: ['6F'] },
+        addressTypes: { prod: ['1e'], testnet: ['6f'] },
         validator: BTCValidator
     },
 ];

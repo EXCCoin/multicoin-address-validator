@@ -136,6 +136,14 @@ describe('WAValidator.validate()', function () {
             valid('Tctx8yDZvytcxehWgBDHDdpbk1TPZ6LXy8G', 'excc', 'testnet');
         });
 
+        it('should return true for correct Verge addresses', () => {
+            valid('D9HsosoCM6pxWU4UD3cgHFacmD18Fu34g5', 'xvg');
+            valid('DQ7ygZYjqmRYg46hPdiEtnx8w2qBxz5bws', 'xvg');
+            valid('DFFH7XL2K79s825b5vhza1mXN7dN5bApBH', 'xvg');
+            valid('mzmb5hvg2YTfhs8iQQt6heBMQ8gdbS4McP', 'xvg', 'testnet');
+        });
+
+
         it('should return true for correct beavercoin addresses', function () {
             valid('BPPtB4EpPi5wCaGXZuNyKQgng8ya579qUh', 'beavercoin');
             valid('BC1LLYoE4mTCHTJhVYvLGxhRTwAHyWTQ49', 'beavercoin');
