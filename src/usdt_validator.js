@@ -1,10 +1,13 @@
 var BTCValidator = require('./bitcoin_validator');
 var ETHValidator = require('./ethereum_validator');
+var TronValidator = require('./tron_validator');
 
-function checkBothValidators(address, currency, networkType) {
-    var result = BTCValidator.isValidAddress(address, currency, networkType);
-    return result ? result :
-        ETHValidator.isValidAddress(address, currency, networkType);
+function checkAllValidators(address, currency, networkType) {
+    return (
+        BTCValidator.isValidAddress(address, currency, networkType)
+        || ETHValidator.isValidAddress(address, currency, networkType)
+        || TronValidator.isValidAddress(address, currency, networkType)
+    );
 }
 
 module.exports = {
@@ -14,8 +17,10 @@ module.exports = {
                 return ETHValidator.isValidAddress(address, currency, opts.networkType);
             } else if (opts.chainType === 'omni') {
                 return BTCValidator.isValidAddress(address, currency, opts.networkType);
+            } else if (opts.chainType === 'trc20') {
+                return TronValidator.isValidAddress(address, currency, opts.networkType)
             }
         }
-        return checkBothValidators(address, currency, opts);
+        return checkAllValidators(address, currency, opts);
     }
 };
