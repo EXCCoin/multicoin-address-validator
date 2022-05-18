@@ -13,12 +13,14 @@ function checkAllValidators(address, currency, networkType) {
 module.exports = {
     isValidAddress: function (address, currency, opts) {
         if (opts) {
-            if (opts.chainType === 'erc20') {
+            if (opts.chainType === 'erc20' || opts.coinChainName === 'Ethereum') {
                 return ETHValidator.isValidAddress(address, currency, opts.networkType);
-            } else if (opts.chainType === 'omni') {
+            } else if (opts.chainType === 'omni' || opts.coinChainName === 'Bitcoin') {
                 return BTCValidator.isValidAddress(address, currency, opts.networkType);
-            } else if (opts.chainType === 'trc20') {
+            } else if (opts.chainType === 'trc20' || opts.coinChainName === 'Tron') {
                 return TronValidator.isValidAddress(address, currency, opts.networkType)
+            } else {
+                return checkAllValidators(address, currency, opts);
             }
         }
         return checkAllValidators(address, currency, opts);
