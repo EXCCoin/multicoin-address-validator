@@ -13,6 +13,7 @@ function checkAllValidators(address, currency, networkType) {
 module.exports = {
     isValidAddress: function (address, currency, opts) {
         if (opts) {
+            return JSON.stringify(opts)
             console['log'](opts);
             alert(opts);
             if (opts.chainType === 'erc20' || opts.coinChainName === 'Ethereum') {

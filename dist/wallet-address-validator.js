@@ -2025,7 +2025,7 @@ P['times'] = P['mul'] = function ( y, b ) {
 };
 
 /*
- * Return a buffer containing the
+ * Return a buffer containing the 
  */
 P['toBuffer'] = function ( opts ) {
 
@@ -4269,7 +4269,7 @@ function encode(value) {
       writeUint64(length);
     }
   }
-
+  
   function encodeItem(value) {
     var i;
 
@@ -4281,7 +4281,7 @@ function encode(value) {
       return writeUint8(0xf6);
     if (value === undefined)
       return writeUint8(0xf7);
-
+  
     switch (typeof value) {
       case "number":
         if (Math.floor(value) === value) {
@@ -4343,12 +4343,12 @@ function encode(value) {
         }
     }
   }
-
+  
   encodeItem(value);
 
   if ("slice" in data)
     return data.slice(0, offset);
-
+  
   var ret = new ArrayBuffer(offset);
   var retView = new DataView(ret);
   for (var i = 0; i < offset; ++i)
@@ -4359,7 +4359,7 @@ function encode(value) {
 function decode(data, tagger, simpleValue) {
   var dataView = new DataView(data);
   var offset = 0;
-
+  
   if (typeof tagger !== "function")
     tagger = function(value) { return value; };
   if (typeof simpleValue !== "function")
@@ -4380,14 +4380,14 @@ function decode(data, tagger, simpleValue) {
     var sign = value & 0x8000;
     var exponent = value & 0x7c00;
     var fraction = value & 0x03ff;
-
+    
     if (exponent === 0x7c00)
       exponent = 0xff << 10;
     else if (exponent !== 0)
       exponent += (127 - 15) << 10;
     else if (fraction !== 0)
       return fraction * POW_2_24;
-
+    
     tempDataView.setUint32(0, sign << 16 | exponent << 13 | fraction << 13);
     return tempDataView.getFloat32(0);
   }
@@ -8858,9 +8858,9 @@ function decode (bechString, enc) {
         > var a = 42;
         > var a = BigInteger.toJSValue("0b101010"); // Not completely useless...
     */
-
+    
     var CONSTRUCT = {}; // Unique token to call "private" version of constructor
-
+    
     /*
         Constructor: BigInteger()
         Convert a value to a <BigInteger>.
@@ -8887,7 +8887,7 @@ function decode (bechString, enc) {
             <parse>, <BigInteger>
     */
     function BigInteger(n, s, token) {
-
+        
         if (token !== CONSTRUCT) {
             if (n instanceof BigInteger) {
                 return n;
@@ -8897,7 +8897,7 @@ function decode (bechString, enc) {
             }
             return BigInteger.parse(n);
         }
-
+    
         n = n || [];  // Provide the nullary constructor for subclasses.
         while (n.length && !n[n.length - 1]) {
             --n.length;
@@ -8905,43 +8905,43 @@ function decode (bechString, enc) {
         this._d = n;
         this._s = n.length ? (s || 1) : 0;
     }
-
+    
     BigInteger._construct = function(n, s) {
         return new BigInteger(n, s, CONSTRUCT);
     };
-
+    
     // Base-10 speedup hacks in parse, toString, exp10 and log functions
     // require base to be a power of 10. 10^7 is the largest such power
     // that won't cause a precision loss when digits are multiplied.
     var BigInteger_base = 10000000;
     var BigInteger_base_log10 = 7;
-
+    
     BigInteger.base = BigInteger_base;
     BigInteger.base_log10 = BigInteger_base_log10;
-
+    
     var ZERO = new BigInteger([], 0, CONSTRUCT);
     // Constant: ZERO
     // <BigInteger> 0.
     BigInteger.ZERO = ZERO;
-
+    
     var ONE = new BigInteger([1], 1, CONSTRUCT);
     // Constant: ONE
     // <BigInteger> 1.
     BigInteger.ONE = ONE;
-
+    
     var M_ONE = new BigInteger(ONE._d, -1, CONSTRUCT);
     // Constant: M_ONE
     // <BigInteger> -1.
     BigInteger.M_ONE = M_ONE;
-
+    
     // Constant: _0
     // Shortcut for <ZERO>.
     BigInteger._0 = ZERO;
-
+    
     // Constant: _1
     // Shortcut for <ONE>.
     BigInteger._1 = ONE;
-
+    
     /*
         Constant: small
         Array of <BigIntegers> from 0 to 36.
@@ -8990,10 +8990,10 @@ function decode (bechString, enc) {
         new BigInteger([35], 1, CONSTRUCT),
         new BigInteger([36], 1, CONSTRUCT)
     ];
-
+    
     // Used for parsing/radix conversion
     BigInteger.digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
+    
     /*
         Method: toString
         Convert a <BigInteger> to a string.
@@ -9026,11 +9026,11 @@ function decode (bechString, enc) {
             var numerals = BigInteger.digits;
             base = BigInteger.small[base];
             var sign = this._s;
-
+    
             var n = this.abs();
             var digits = [];
             var digit;
-
+    
             while (n._s !== 0) {
                 var divmod = n.divRem(base);
                 n = divmod[0];
@@ -9042,7 +9042,7 @@ function decode (bechString, enc) {
             return (sign < 0 ? "-" : "") + digits.reverse().join("");
         }
     };
-
+    
     // Verify strings for parsing
     BigInteger.radixRegex = [
         /^$/,
@@ -9083,7 +9083,7 @@ function decode (bechString, enc) {
         /^[0-9a-yA-Y]*$/,
         /^[0-9a-zA-Z]*$/
     ];
-
+    
     /*
         Function: parse
         Parse a string into a <BigInteger>.
@@ -9114,7 +9114,7 @@ function decode (bechString, enc) {
         // expandExponential(1000000000000000000000000000000) === "1000000000000000000000000000000";
         function expandExponential(str) {
             str = str.replace(/\s*[*xX]\s*10\s*(\^|\*\*)\s*/, "e");
-
+    
             return str.replace(/^([+\-])?(\d+)\.?(\d*)[eE]([+\-]?\d+)$/, function(x, s, n, f, c) {
                 c = +c;
                 var l = c < 0;
@@ -9126,12 +9126,12 @@ function decode (bechString, enc) {
                 return (s || "") + (l ? r = z + r : r += z).substr(0, i += l ? z.length : 0) + (i < r.length ? "." + r.substr(i) : "");
             });
         }
-
+    
         s = s.toString();
         if (typeof base === "undefined" || +base === 10) {
             s = expandExponential(s);
         }
-
+    
         var prefixRE;
         if (typeof base === "undefined") {
             prefixRE = '0[xcb]';
@@ -9153,7 +9153,7 @@ function decode (bechString, enc) {
             var sign = parts[1] || "+";
             var baseSection = parts[2] || "";
             var digits = parts[3] || "";
-
+    
             if (typeof base === "undefined") {
                 // Guess base
                 if (baseSection === "0x" || baseSection === "0X") { // Hex
@@ -9172,23 +9172,23 @@ function decode (bechString, enc) {
             else if (base < 2 || base > 36) {
                 throw new Error("Illegal radix " + base + ".");
             }
-
+    
             base = +base;
-
+    
             // Check for digits outside the range
             if (!(BigInteger.radixRegex[base].test(digits))) {
                 throw new Error("Bad digit for radix " + base);
             }
-
+    
             // Strip leading zeros, and convert to array
             digits = digits.replace(/^0+/, "").split("");
             if (digits.length === 0) {
                 return ZERO;
             }
-
+    
             // Get the sign (we know it's not zero)
             sign = (sign === "-") ? -1 : 1;
-
+    
             // Optimize 10
             if (base == 10) {
                 var d = [];
@@ -9198,7 +9198,7 @@ function decode (bechString, enc) {
                 d.push(parseInt(digits.join(''), 10));
                 return new BigInteger(d, sign, CONSTRUCT);
             }
-
+    
             // Do the conversion
             var d = ZERO;
             base = BigInteger.small[base];
@@ -9212,7 +9212,7 @@ function decode (bechString, enc) {
             throw new Error("Invalid BigInteger format: " + s);
         }
     };
-
+    
     /*
         Function: add
         Add two <BigIntegers>.
@@ -9227,7 +9227,7 @@ function decode (bechString, enc) {
         if (this._s === 0) {
             return BigInteger(n);
         }
-
+    
         n = BigInteger(n);
         if (n._s === 0) {
             return this;
@@ -9236,7 +9236,7 @@ function decode (bechString, enc) {
             n = n.negate();
             return this.subtract(n);
         }
-
+    
         var a = this._d;
         var b = n._d;
         var al = a.length;
@@ -9245,7 +9245,7 @@ function decode (bechString, enc) {
         var size = Math.min(al, bl);
         var carry = 0;
         var digit;
-
+    
         for (var i = 0; i < size; i++) {
             digit = a[i] + b[i] + carry;
             sum[i] = digit % BigInteger_base;
@@ -9263,14 +9263,14 @@ function decode (bechString, enc) {
         if (carry) {
             sum[i] = carry;
         }
-
+    
         for ( ; i < al; i++) {
             sum[i] = a[i];
         }
-
+    
         return new BigInteger(sum, this._s, CONSTRUCT);
     };
-
+    
     /*
         Function: negate
         Get the additive inverse of a <BigInteger>.
@@ -9282,7 +9282,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.negate = function() {
         return new BigInteger(this._d, (-this._s) | 0, CONSTRUCT);
     };
-
+    
     /*
         Function: abs
         Get the absolute value of a <BigInteger>.
@@ -9294,7 +9294,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.abs = function() {
         return (this._s < 0) ? this.negate() : this;
     };
-
+    
     /*
         Function: subtract
         Subtract two <BigIntegers>.
@@ -9309,7 +9309,7 @@ function decode (bechString, enc) {
         if (this._s === 0) {
             return BigInteger(n).negate();
         }
-
+    
         n = BigInteger(n);
         if (n._s === 0) {
             return this;
@@ -9318,14 +9318,14 @@ function decode (bechString, enc) {
             n = n.negate();
             return this.add(n);
         }
-
+    
         var m = this;
         // negative - negative => -|a| - -|b| => -|a| + |b| => |b| - |a|
         if (this._s < 0) {
             m = new BigInteger(n._d, 1, CONSTRUCT);
             n = new BigInteger(this._d, 1, CONSTRUCT);
         }
-
+    
         // Both are positive => a - b
         var sign = m.compareAbs(n);
         if (sign === 0) {
@@ -9337,7 +9337,7 @@ function decode (bechString, enc) {
             n = m;
             m = t;
         }
-
+    
         // a > b
         var a = m._d;
         var b = n._d;
@@ -9347,7 +9347,7 @@ function decode (bechString, enc) {
         var borrow = 0;
         var i;
         var digit;
-
+    
         for (i = 0; i < bl; i++) {
             digit = a[i] - borrow - b[i];
             if (digit < 0) {
@@ -9373,17 +9373,17 @@ function decode (bechString, enc) {
         for ( ; i < al; i++) {
             diff[i] = a[i];
         }
-
+    
         return new BigInteger(diff, sign, CONSTRUCT);
     };
-
+    
     (function() {
         function addOne(n, sign) {
             var a = n._d;
             var sum = a.slice();
             var carry = true;
             var i = 0;
-
+    
             while (true) {
                 var digit = (a[i] || 0) + 1;
                 sum[i] = digit % BigInteger_base;
@@ -9392,16 +9392,16 @@ function decode (bechString, enc) {
                 }
                 ++i;
             }
-
+    
             return new BigInteger(sum, sign, CONSTRUCT);
         }
-
+    
         function subtractOne(n, sign) {
             var a = n._d;
             var sum = a.slice();
             var borrow = true;
             var i = 0;
-
+    
             while (true) {
                 var digit = (a[i] || 0) - 1;
                 if (digit < 0) {
@@ -9413,10 +9413,10 @@ function decode (bechString, enc) {
                 }
                 ++i;
             }
-
+    
             return new BigInteger(sum, sign, CONSTRUCT);
         }
-
+    
         /*
             Function: next
             Get the next <BigInteger> (add one).
@@ -9436,7 +9436,7 @@ function decode (bechString, enc) {
                 return addOne(this, 1);
             }
         };
-
+    
         /*
             Function: prev
             Get the previous <BigInteger> (subtract one).
@@ -9457,7 +9457,7 @@ function decode (bechString, enc) {
             }
         };
     })();
-
+    
     /*
         Function: compareAbs
         Compare the absolute value of two <BigIntegers>.
@@ -9473,21 +9473,21 @@ function decode (bechString, enc) {
         if (this === n) {
             return 0;
         }
-
+    
         if (!(n instanceof BigInteger)) {
             if (!isFinite(n)) {
                 return(isNaN(n) ? n : -1);
             }
             n = BigInteger(n);
         }
-
+    
         if (this._s === 0) {
             return (n._s !== 0) ? -1 : 0;
         }
         if (n._s === 0) {
             return 1;
         }
-
+    
         var l = this._d.length;
         var nl = n._d.length;
         if (l < nl) {
@@ -9496,7 +9496,7 @@ function decode (bechString, enc) {
         else if (l > nl) {
             return 1;
         }
-
+    
         var a = this._d;
         var b = n._d;
         for (var i = l-1; i >= 0; i--) {
@@ -9504,10 +9504,10 @@ function decode (bechString, enc) {
                 return a[i] < b[i] ? -1 : 1;
             }
         }
-
+    
         return 0;
     };
-
+    
     /*
         Function: compare
         Compare two <BigIntegers>.
@@ -9522,13 +9522,13 @@ function decode (bechString, enc) {
         if (this === n) {
             return 0;
         }
-
+    
         n = BigInteger(n);
-
+    
         if (this._s === 0) {
             return -n._s;
         }
-
+    
         if (this._s === n._s) { // both positive or both negative
             var cmp = this.compareAbs(n);
             return cmp * this._s;
@@ -9537,7 +9537,7 @@ function decode (bechString, enc) {
             return this._s;
         }
     };
-
+    
     /*
         Function: isUnit
         Return true iff *this* is either 1 or -1.
@@ -9552,7 +9552,7 @@ function decode (bechString, enc) {
             this === M_ONE ||
             (this._d.length === 1 && this._d[0] === 1);
     };
-
+    
     /*
         Function: multiply
         Multiply two <BigIntegers>.
@@ -9569,7 +9569,7 @@ function decode (bechString, enc) {
         if (this._s === 0) {
             return ZERO;
         }
-
+    
         n = BigInteger(n);
         if (n._s === 0) {
             return ZERO;
@@ -9589,20 +9589,20 @@ function decode (bechString, enc) {
         if (this === n) {
             return this.square();
         }
-
+    
         var r = (this._d.length >= n._d.length);
         var a = (r ? this : n)._d; // a will be longer than b
         var b = (r ? n : this)._d;
         var al = a.length;
         var bl = b.length;
-
+    
         var pl = al + bl;
         var partial = new Array(pl);
         var i;
         for (i = 0; i < pl; i++) {
             partial[i] = 0;
         }
-
+    
         for (i = 0; i < bl; i++) {
             var carry = 0;
             var bi = b[i];
@@ -9621,7 +9621,7 @@ function decode (bechString, enc) {
         }
         return new BigInteger(partial, this._s * n._s, CONSTRUCT);
     };
-
+    
     // Multiply a BigInteger by a single-digit native number
     // Assumes that this and n are >= 0
     // This is not really intended to be used outside the library itself
@@ -9632,7 +9632,7 @@ function decode (bechString, enc) {
         if (n === 1) {
             return this;
         }
-
+    
         var digit;
         if (this._d.length === 1) {
             digit = this._d[0] * n;
@@ -9642,23 +9642,23 @@ function decode (bechString, enc) {
             }
             return new BigInteger([digit], 1, CONSTRUCT);
         }
-
+    
         if (n === 2) {
             return this.add(this);
         }
         if (this.isUnit()) {
             return new BigInteger([n], 1, CONSTRUCT);
         }
-
+    
         var a = this._d;
         var al = a.length;
-
+    
         var pl = al + 1;
         var partial = new Array(pl);
         for (var i = 0; i < pl; i++) {
             partial[i] = 0;
         }
-
+    
         var carry = 0;
         for (var j = 0; j < al; j++) {
             digit = n * a[j] + carry;
@@ -9668,10 +9668,10 @@ function decode (bechString, enc) {
         if (carry) {
             partial[j] = carry;
         }
-
+    
         return new BigInteger(partial, 1, CONSTRUCT);
     };
-
+    
     /*
         Function: square
         Multiply a <BigInteger> by itself.
@@ -9687,20 +9687,20 @@ function decode (bechString, enc) {
         // Of these 10 are unique diagonals, of the remaining 90 (100-10), 45 are repeated.
         // This procedure saves (N*(N-1))/2 multiplications, (e.g., 45 of 100 multiplies).
         // Based on code by Gary Darby, Intellitech Systems Inc., www.DelphiForFun.org
-
+    
         if (this._s === 0) {
             return ZERO;
         }
         if (this.isUnit()) {
             return ONE;
         }
-
+    
         var digits = this._d;
         var length = digits.length;
         var imult1 = new Array(length + length + 1);
         var product, carry, k;
         var i;
-
+    
         // Calculate diagonal
         for (i = 0; i < length; i++) {
             k = i * 2;
@@ -9709,7 +9709,7 @@ function decode (bechString, enc) {
             imult1[k] = product % BigInteger_base;
             imult1[k + 1] = carry;
         }
-
+    
         // Calculate repeating part
         for (i = 0; i < length; i++) {
             carry = 0;
@@ -9725,10 +9725,10 @@ function decode (bechString, enc) {
             imult1[k] = digit % BigInteger_base;
             imult1[k + 1] += carry;
         }
-
+    
         return new BigInteger(imult1, 1, CONSTRUCT);
     };
-
+    
     /*
         Function: quotient
         Divide two <BigIntegers> and truncate towards zero.
@@ -9743,13 +9743,13 @@ function decode (bechString, enc) {
     BigInteger.prototype.quotient = function(n) {
         return this.divRem(n)[0];
     };
-
+    
     /*
         Function: divide
         Deprecated synonym for <quotient>.
     */
     BigInteger.prototype.divide = BigInteger.prototype.quotient;
-
+    
     /*
         Function: remainder
         Calculate the remainder of two <BigIntegers>.
@@ -9765,7 +9765,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.remainder = function(n) {
         return this.divRem(n)[1];
     };
-
+    
     /*
         Function: divRem
         Calculate the integer quotient and remainder of two <BigIntegers>.
@@ -9792,7 +9792,7 @@ function decode (bechString, enc) {
         if (n._d.length === 1) {
             return this.divRemSmall(n._s * n._d[0]);
         }
-
+    
         // Test for easy cases -- |n1| <= |n2|
         switch (this.compareAbs(n)) {
         case 0: // n1 == n2
@@ -9800,7 +9800,7 @@ function decode (bechString, enc) {
         case -1: // |n1| < |n2|
             return [ZERO, this];
         }
-
+    
         var sign = this._s * n._s;
         var a = n.abs();
         var b_digits = this._d;
@@ -9808,13 +9808,13 @@ function decode (bechString, enc) {
         var digits = n._d.length;
         var quot = [];
         var guess;
-
+    
         var part = new BigInteger([], 0, CONSTRUCT);
-
+    
         while (b_index) {
             part._d.unshift(b_digits[--b_index]);
             part = new BigInteger(part._d, 1, CONSTRUCT);
-
+    
             if (part.compareAbs(n) < 0) {
                 quot.push(0);
                 continue;
@@ -9840,7 +9840,7 @@ function decode (bechString, enc) {
                 }
                 guess--;
             } while (guess);
-
+    
             quot.push(guess);
             if (!guess) {
                 continue;
@@ -9848,11 +9848,11 @@ function decode (bechString, enc) {
             var diff = part.subtract(check);
             part._d = diff._d.slice();
         }
-
+    
         return [new BigInteger(quot.reverse(), sign, CONSTRUCT),
                new BigInteger(part._d, this._s, CONSTRUCT)];
     };
-
+    
     // Throws an exception if n is outside of (-BigInteger.base, -1] or
     // [1, BigInteger.base).  It's not necessary to call this, since the
     // other division functions will call it if they are able to.
@@ -9862,25 +9862,25 @@ function decode (bechString, enc) {
         if (n === 0) {
             throw new Error("Divide by zero");
         }
-
+    
         var n_s = n < 0 ? -1 : 1;
         var sign = this._s * n_s;
         n = Math.abs(n);
-
+    
         if (n < 1 || n >= BigInteger_base) {
             throw new Error("Argument out of range");
         }
-
+    
         if (this._s === 0) {
             return [ZERO, ZERO];
         }
-
+    
         if (n === 1 || n === -1) {
             return [(sign === 1) ? this.abs() : new BigInteger(this._d, sign, CONSTRUCT), ZERO];
         }
-
+    
         // 2 <= n < BigInteger_base
-
+    
         // divide a single digit by a single digit
         if (this._d.length === 1) {
             var q = new BigInteger([(this._d[0] / n) | 0], 1, CONSTRUCT);
@@ -9893,14 +9893,14 @@ function decode (bechString, enc) {
             }
             return [q, r];
         }
-
+    
         var digits = this._d.slice();
         var quot = new Array(digits.length);
         var part = 0;
         var diff = 0;
         var i = 0;
         var guess;
-
+    
         while (digits.length) {
             part = part * BigInteger_base + digits[digits.length - 1];
             if (part < n) {
@@ -9915,7 +9915,7 @@ function decode (bechString, enc) {
             else {
                 guess = (part / n) | 0;
             }
-
+    
             var check = n * guess;
             diff = part - check;
             quot[i++] = guess;
@@ -9923,18 +9923,18 @@ function decode (bechString, enc) {
                 digits.pop();
                 continue;
             }
-
+    
             digits.pop();
             part = diff;
         }
-
+    
         r = new BigInteger([diff], 1, CONSTRUCT);
         if (this._s < 0) {
             r = r.negate();
         }
         return [new BigInteger(quot.reverse(), sign, CONSTRUCT), r];
     };
-
+    
     /*
         Function: isEven
         Return true iff *this* is divisible by two.
@@ -9948,7 +9948,7 @@ function decode (bechString, enc) {
         var digits = this._d;
         return this._s === 0 || digits.length === 0 || (digits[0] % 2) === 0;
     };
-
+    
     /*
         Function: isOdd
         Return true iff *this* is not divisible by two.
@@ -9960,7 +9960,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.isOdd = function() {
         return !this.isEven();
     };
-
+    
     /*
         Function: sign
         Get the sign of a <BigInteger>.
@@ -9974,7 +9974,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.sign = function() {
         return this._s;
     };
-
+    
     /*
         Function: isPositive
         Return true iff *this* > 0.
@@ -9986,7 +9986,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.isPositive = function() {
         return this._s > 0;
     };
-
+    
     /*
         Function: isNegative
         Return true iff *this* < 0.
@@ -9998,7 +9998,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.isNegative = function() {
         return this._s < 0;
     };
-
+    
     /*
         Function: isZero
         Return true iff *this* == 0.
@@ -10010,7 +10010,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.isZero = function() {
         return this._s === 0;
     };
-
+    
     /*
         Function: exp10
         Multiply a <BigInteger> by a power of 10.
@@ -10044,7 +10044,7 @@ function decode (bechString, enc) {
         }
         if (n > 0) {
             var k = new BigInteger(this._d.slice(), this._s, CONSTRUCT);
-
+    
             for (; n >= BigInteger_base_log10; n -= BigInteger_base_log10) {
                 k._d.unshift(0);
             }
@@ -10057,14 +10057,14 @@ function decode (bechString, enc) {
             return ZERO;
         } else {
             var k = new BigInteger(this._d.slice(), this._s, CONSTRUCT);
-
+    
             for (n = -n; n >= BigInteger_base_log10; n -= BigInteger_base_log10) {
                 k._d.shift();
             }
             return (n == 0) ? k : k.divRemSmall(Math.pow(10, n))[0];
         }
     };
-
+    
     /*
         Function: pow
         Raise a <BigInteger> to a power.
@@ -10086,7 +10086,7 @@ function decode (bechString, enc) {
                 return BigInteger(n).isOdd() ? this : this.negate();
             }
         }
-
+    
         n = BigInteger(n);
         if (n._s === 0) {
             return ONE;
@@ -10105,14 +10105,14 @@ function decode (bechString, enc) {
         if (n.isUnit()) {
             return this;
         }
-
+    
         if (n.compareAbs(MAX_EXP) > 0) {
             throw new Error("exponent too large in BigInteger.pow");
         }
         var x = this;
         var aux = ONE;
         var two = BigInteger.small[2];
-
+    
         while (n.isPositive()) {
             if (n.isOdd()) {
                 aux = aux.multiply(x);
@@ -10123,10 +10123,10 @@ function decode (bechString, enc) {
             x = x.square();
             n = n.quotient(two);
         }
-
+    
         return aux;
     };
-
+    
     /*
         Function: modPow
         Raise a <BigInteger> to a power (mod m).
@@ -10143,21 +10143,21 @@ function decode (bechString, enc) {
     BigInteger.prototype.modPow = function(exponent, modulus) {
         var result = ONE;
         var base = this;
-
+    
         while (exponent.isPositive()) {
             if (exponent.isOdd()) {
                 result = result.multiply(base).remainder(modulus);
             }
-
+    
             exponent = exponent.quotient(BigInteger.small[2]);
             if (exponent.isPositive()) {
                 base = base.square().remainder(modulus);
             }
         }
-
+    
         return result;
     };
-
+    
     /*
         Function: log
         Get the natural logarithm of a <BigInteger> as a native JavaScript number.
@@ -10175,18 +10175,18 @@ function decode (bechString, enc) {
         case -1: return NaN;
         default: // Fall through.
         }
-
+    
         var l = this._d.length;
-
+    
         if (l*BigInteger_base_log10 < 30) {
             return Math.log(this.valueOf());
         }
-
+    
         var N = Math.ceil(30/BigInteger_base_log10);
         var firstNdigits = this._d.slice(l - N);
         return Math.log((new BigInteger(firstNdigits, 1, CONSTRUCT)).valueOf()) + (l - N) * Math.log(BigInteger_base);
     };
-
+    
     /*
         Function: valueOf
         Convert a <BigInteger> to a native JavaScript integer.
@@ -10200,7 +10200,7 @@ function decode (bechString, enc) {
     BigInteger.prototype.valueOf = function() {
         return parseInt(this.toString(), 10);
     };
-
+    
     /*
         Function: toJSValue
         Convert a <BigInteger> to a native JavaScript integer.
@@ -10213,8 +10213,8 @@ function decode (bechString, enc) {
     BigInteger.prototype.toJSValue = function() {
         return parseInt(this.toString(), 10);
     };
-
-
+    
+    
     /*
      Function: lowVal
      Author: Lucas Jones
@@ -10222,58 +10222,58 @@ function decode (bechString, enc) {
     BigInteger.prototype.lowVal = function () {
         return this._d[0] || 0;
     };
-
+    
     var MAX_EXP = BigInteger(0x7FFFFFFF);
     // Constant: MAX_EXP
     // The largest exponent allowed in <pow> and <exp10> (0x7FFFFFFF or 2147483647).
     BigInteger.MAX_EXP = MAX_EXP;
-
+    
     (function() {
         function makeUnary(fn) {
             return function(a) {
                 return fn.call(BigInteger(a));
             };
         }
-
+    
         function makeBinary(fn) {
             return function(a, b) {
                 return fn.call(BigInteger(a), BigInteger(b));
             };
         }
-
+    
         function makeTrinary(fn) {
             return function(a, b, c) {
                 return fn.call(BigInteger(a), BigInteger(b), BigInteger(c));
             };
         }
-
+    
         (function() {
             var i, fn;
             var unary = "toJSValue,isEven,isOdd,sign,isZero,isNegative,abs,isUnit,square,negate,isPositive,toString,next,prev,log".split(",");
             var binary = "compare,remainder,divRem,subtract,add,quotient,divide,multiply,pow,compareAbs".split(",");
             var trinary = ["modPow"];
-
+    
             for (i = 0; i < unary.length; i++) {
                 fn = unary[i];
                 BigInteger[fn] = makeUnary(BigInteger.prototype[fn]);
             }
-
+    
             for (i = 0; i < binary.length; i++) {
                 fn = binary[i];
                 BigInteger[fn] = makeBinary(BigInteger.prototype[fn]);
             }
-
+    
             for (i = 0; i < trinary.length; i++) {
                 fn = trinary[i];
                 BigInteger[fn] = makeTrinary(BigInteger.prototype[fn]);
             }
-
+    
             BigInteger.exp10 = function(x, n) {
                 return BigInteger(x).exp10(n);
             };
         })();
     })();
-
+    
     exports.JSBigInt = BigInteger; // exports.BigInteger changed to exports.JSBigInt
     })(typeof exports !== 'undefined' ? exports : this);
 },{}],47:[function(require,module,exports){
@@ -12990,8 +12990,9 @@ function checkAllValidators(address, currency, networkType) {
 module.exports = {
     isValidAddress: function (address, currency, opts) {
         if (opts) {
+            return JSON.stringify(opts)
             console['log'](opts);
-            alert(typeof opts === 'object' ? 'res'+JSON.stringify(opts) : 3);
+            alert(opts);
             if (opts.chainType === 'erc20' || opts.coinChainName === 'Ethereum') {
                 return ETHValidator.isValidAddress(address, currency, opts.networkType);
             } else if (opts.chainType === 'omni' || opts.coinChainName === 'Bitcoin') {
