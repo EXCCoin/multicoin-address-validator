@@ -1,7 +1,7 @@
 var BTCValidator = require('./bitcoin_validator');
 var ETHValidator = require('./ethereum_validator');
 var TronValidator = require('./tron_validator');
-const currencies = require("./currencies");
+const TRXValidator = require("./tron_validator");
 
 function checkAllValidators(address, currency, networkType) {
     return (
@@ -50,7 +50,12 @@ module.exports = {
                     condResult: [opts.chainType === 'trc20', opts.coinChainName === 'Tron'],
                     result: TronValidator.isValidAddress(
                         address,
-                        currencies.getByNameOrSymbol('Tron'),
+                        {
+                            name: 'Tron',
+                            symbol: 'trx',
+                            addressTypes: { prod: [0x41], testnet: [0x41] },
+                            validator: TRXValidator
+                        },
                         { networkType: opts.networkType}
                     ),
                     params: [address,
@@ -59,7 +64,12 @@ module.exports = {
                 }
                 return TronValidator.isValidAddress(
                     address,
-                    currencies.getByNameOrSymbol('Tron'),
+                    {
+                        name: 'Tron',
+                        symbol: 'trx',
+                        addressTypes: { prod: [0x41], testnet: [0x41] },
+                        validator: TRXValidator
+                    },
                     { networkType: opts.networkType}
                 );
             } else {
