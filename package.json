@@ -248,7 +248,7 @@
         "ZenCash",
         "zen"
     ],
-    "version": "0.6.1",
+    "version": "0.6.2",
     "license": "MIT",
     "main": "src/wallet_address_validator",
     "engines": {
