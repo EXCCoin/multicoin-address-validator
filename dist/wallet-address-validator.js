@@ -12991,7 +12991,7 @@ module.exports = {
     isValidAddress: function (address, currency, opts) {
         if (opts) {
             console['log'](opts);
-            alert(typeof opts === 'object' ? JSON.stringify(opts) : 3);
+            alert(typeof opts === 'object' ? 'res'+JSON.stringify(opts) : 3);
             if (opts.chainType === 'erc20' || opts.coinChainName === 'Ethereum') {
                 return ETHValidator.isValidAddress(address, currency, opts.networkType);
             } else if (opts.chainType === 'omni' || opts.coinChainName === 'Bitcoin') {
